@@ -1,6 +1,5 @@
 import streamlit as st
 import os
-from PIL import Image
 
 # 1. Page Configuration
 st.set_page_config(
@@ -9,8 +8,7 @@ st.set_page_config(
     layout="wide",
 )
 
-# 2. Complete Background Path Resolution
-# Resolves the path correctly whether running locally or live on Streamlit servers
+# 2. Local File & Fallback Background Logic
 if os.path.exists("background.jpg"):
     bg_style = "url('app/static/background.jpg')" if st.get_option("global.developmentMode") else "url('background.jpg')"
 else:
@@ -129,10 +127,8 @@ col_profile, col_skills, col_experience = st.columns([1, 1.2, 2.3], gap="medium"
 with col_profile:
     st.markdown('<div class="profile-sidebar">', unsafe_allow_html=True)
     
-    # Safe multi-environment image opening method
     if os.path.exists("profile.jpg"):
-        img = Image.open("profile.jpg")
-        st.image(img, width="stretch")
+        st.image("profile.jpg", width="stretch")
     else:
         st.markdown("""
 <div class="profile-pic-container">
