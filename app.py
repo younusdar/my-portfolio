@@ -1,6 +1,4 @@
 import streamlit as st
-import os
-from PIL import Image
 
 # 1. Page Configuration
 st.set_page_config(
@@ -9,27 +7,26 @@ st.set_page_config(
     layout="wide",
 )
 
-# 2. Complete Background Path Resolution
-# Resolves the path correctly whether running locally or live on Streamlit servers
-if os.path.exists("background.jpg"):
-    bg_style = "url('app/static/background.jpg')" if st.get_option("global.developmentMode") else "url('background.jpg')"
-else:
-    bg_style = "url('https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?q=80&w=1920')"
+# 2. Premium Hybrid Galaxy Background (Using a reliable cloud image URL)
+bg_url = "https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?q=80&w=1920"
+
+# Fallback profile picture from your official LinkedIn asset profile context
+profile_url = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400" 
 
 # Inject the dynamic & fully responsive mobile styling
 st.markdown(f"""
 <style>
 /* Base Theme */
 .stApp {{
-    background: linear-gradient(135deg, rgba(6, 10, 26, 0.92) 0%, rgba(11, 19, 43, 0.95) 50%, rgba(27, 38, 59, 0.92) 100%), 
-                {bg_style} no-repeat center center fixed;
+    background: linear-gradient(135deg, rgba(6, 10, 26, 0.94) 0%, rgba(11, 19, 43, 0.96) 50%, rgba(27, 38, 59, 0.94) 100%), 
+                url('{bg_url}') no-repeat center center fixed;
     background-size: cover;
     color: #cbd5e1;
 }}
 
 /* Responsive Profile Container */
 .profile-sidebar {{
-    background: rgba(15, 23, 42, 0.65);
+    background: rgba(15, 23, 42, 0.7);
     backdrop-filter: blur(20px);
     padding: 25px;
     border-radius: 20px;
@@ -41,7 +38,7 @@ st.markdown(f"""
 
 /* Structural Information Blocks */
 .skills-card {{
-    background: rgba(11, 19, 43, 0.7);
+    background: rgba(11, 19, 43, 0.75);
     backdrop-filter: blur(12px);
     padding: 18px;
     border-radius: 14px;
@@ -49,7 +46,7 @@ st.markdown(f"""
     margin-bottom: 15px;
 }}
 .web-card {{
-    background: rgba(15, 23, 42, 0.75);
+    background: rgba(15, 23, 42, 0.8);
     backdrop-filter: blur(12px);
     padding: 22px;
     border-radius: 16px;
@@ -88,21 +85,14 @@ h1, h2, h3, h4, h5 {{
     justify-content: center;
     margin-bottom: 15px;
 }}
-.profile-pic-placeholder {{
+.profile-img-styled {{
     width: 140px;
     height: 140px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(129, 140, 248, 0.15) 0%, rgba(15, 23, 42, 0.8) 100%);
-    border: 2px dashed rgba(129, 140, 248, 0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #a5b4fc;
-    font-size: 12px;
-    font-weight: 500;
+    object-fit: cover;
+    border: 2px solid rgba(129, 140, 248, 0.5);
+    box-shadow: 0 4px 20px rgba(129, 140, 248, 0.3);
 }}
-
-/* --- MOBILE SPECIFIC MEDIA QUERY OVERRIDES --- */
 @media (max-width: 768px) {{
     .timeline-badge {{
         float: none;
@@ -124,23 +114,17 @@ h1, h2, h3, h4, h5 {{
 col_profile, col_skills, col_experience = st.columns([1, 1.2, 2.3], gap="medium")
 
 # ==============================================================================
-# --- COLUMN 1: STATIC PROFILE CARD WITH PHOTO PLACEHOLDER ---
+# --- COLUMN 1: STATIC PROFILE CARD ---
 # ==============================================================================
 with col_profile:
     st.markdown('<div class="profile-sidebar">', unsafe_allow_html=True)
     
-    # Safe multi-environment image opening method
-    if os.path.exists("profile.jpg"):
-        img = Image.open("profile.jpg")
-        st.image(img, width="stretch")
-    else:
-        st.markdown("""
-<div class="profile-pic-container">
-<div class="profile-pic-placeholder">
-<span>[ Photo Placeholder ]</span>
-</div>
-</div>
-""", unsafe_allow_html=True)
+    # Renders the image directly inside the sidebar container using the stable URL path
+    st.markdown(f"""
+    <div class="profile-pic-container">
+        <img src="{profile_url}" class="profile-img-styled" alt="Younus Dar">
+    </div>
+    """, unsafe_allow_html=True)
         
     st.markdown("""
 <h1 style="margin-bottom:2px; font-size:28px; margin-top:10px;">Younus Dar</h1>
